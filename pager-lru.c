@@ -14,7 +14,7 @@ void pageit(Pentry q[MAXPROCESSES]) {
     /* Local vars */
     int proctmp;
     int pagetmp;
-    int p_counter;
+    int pg_counter;
     int my_pg;
     int proc_val;
     int new_pg;
@@ -38,8 +38,8 @@ void pageit(Pentry q[MAXPROCESSES]) {
             continue;
         }
         else {
-            p_counter = q[proc_val].pc;         
-            my_pg = p_counter/PAGESIZE;
+            pg_counter = q[proc_val].pc;         
+            my_pg = pg_counter/PAGESIZE;
             timestamps[proc_val][my_pg] = tick;
             if(!q[proc_val].pages[my_pg]) {
                 // check to see if swap is possible and use LRU
