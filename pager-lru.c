@@ -1,27 +1,10 @@
-/*
- * File: pager-lru.c
- * Author:       Andy Sayler
- *               http://www.andysayler.com
- * Adopted From: Dr. Alva Couch
- *               http://www.cs.tufts.edu/~couch/
- *
- * Project: CSCI 3753 Programming Assignment 4
- * Create Date: Unknown
- * Modify Date: 2012/04/03
- * Description:
- * 	This file contains an lru pageit
- *      implmentation.
- */
-
 #include <stdio.h> 
 #include <stdlib.h>
 
 #include "simulator.h"
 
 void pageit(Pentry q[MAXPROCESSES]) { 
-    
     /* This file contains the stub for an LRU pager */
-    /* You may need to add/remove/modify any part of this file */
 
     /* Static vars */
     static int initialized = 0;
@@ -41,10 +24,41 @@ void pageit(Pentry q[MAXPROCESSES]) {
 	}
 	initialized = 1;
     }
-    
-    /* TODO: Implement LRU Paging */
-    fprintf(stderr, "pager-lru not yet implemented. Exiting...\n");
-    exit(EXIT_FAILURE);
+    // LRU paging implementation
+
+    for(proc_val = 0; proc_val < MAXPROCESSES; proc_val++) { 
+        if(!q[proc_val].active) {
+            continue;
+        }
+        else {
+            p_counter = q[proc_val].pc;         
+            my_pg = p_counter/PAGESIZE;
+            timestamps[proc_val][my_pg] = tick;
+            if(!q[proc_val].pages[my_pg]) {
+                // check to see if swap is possible and use LRU
+                if(!pagein(proc_val, my_pg)) {
+                    min_val = tick;
+                    for(new_pg = 0; new_pg < MAXPROCPAGES; new_pg++) {
+                        if(!q[proc_val].pages[new_pg]) {
+                            continue;
+                        }
+                        else {
+                            if(timestamps[proc_val][new_pg] < min_val) {
+                                // setting lowest timestamp
+                                min_val = timestamps[proc_val][new_pg];
+                                min_pg = new_pg; // setting lowest page
+                            }
+                        }
+                    }
+                    // if pageout returns failure then exit
+                    if(!pageout(proc_val, min_pg)) {
+                        printf("*** Error! ***\n");
+                    }
+                        
+                }
+            }
+        }
+    }    
 
     /* advance time for next pageit iteration */
     tick++;
