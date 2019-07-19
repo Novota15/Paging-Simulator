@@ -14,6 +14,10 @@ void pageit(Pentry q[MAXPROCESSES]) {
     /* Local vars */
     int proctmp;
     int pagetmp;
+    int p_counter;
+    int my_pg;
+    int proc_val;
+    
 
     /* initialize static vars on first run */
     if(!initialized){
