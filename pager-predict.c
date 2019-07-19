@@ -120,7 +120,8 @@ void pageit(Pentry q[MAXPROCESSES]) {
     /* Static vars */
     static int initialized = 0;
     static int tick = 1; // artificial time
-    
+    static int prev_pg[MAXPROCESSES];
+
     /* Local vars */
     int proctmp;
     int p_counter;
