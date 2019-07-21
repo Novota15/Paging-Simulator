@@ -84,7 +84,7 @@ void pager_predict(int* predict, int curr_pg, int my_prog_var) {
             set_to_one_3(&predict[0], &predict[9], &predict[10]);
         }
         else if(curr_pg == 10) {
-            set_to_one_3(&predict[0], &predict[11], &predict[12]);
+            set_to_one_3(&predict[0], &predict[10], &predict[12]);
         }
         else if(curr_pg == 11) {
             set_to_one_3(&predict[0], &predict[12], &predict[13]);
@@ -147,12 +147,12 @@ void pageit(Pentry q[MAXPROCESSES]) {
             continue; // do nothing
         }
         else { // if the process is active
-            int pg_predict[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // max_pc only requires a page number of 15
+            int page_predict[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // max_pc only needs a page number of 15
             p_counter = q[proc_val].pc;              
             curr_pg = p_counter/PAGESIZE;         
-            pg_predict[curr_pg] = 1;
+            page_predict[curr_pg] = 1;
 
-            // selecting program based on the prev pg
+            // selecting program based on the previous page
             if(curr_pg == 0 && prev_pg[proc_val] == 8) {
                 selection[proc_val] = 1;
             }
@@ -169,10 +169,10 @@ void pageit(Pentry q[MAXPROCESSES]) {
                 selection[proc_val] = 3;
             }
 
-            pager_predict(pg_predict, curr_pg, selection[proc_val]); // my prediction function
+            pager_predict(page_predict, curr_pg, selection[proc_val]); // my prediction function
             // 1911/128 < 15
             for(int i = 0; i < 15; i++) {
-                if(pg_predict[i]) {
+                if(page_predict[i]) {
                     // swap the page if predicted
                     if(q[proc_val].pages[i]) {
                        continue;
