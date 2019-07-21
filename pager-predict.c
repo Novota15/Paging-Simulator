@@ -7,8 +7,8 @@ void pager_predict(int*, int, int);
 void set_to_one_2(int*, int*);
 void set_to_one_3(int*, int*, int*);
 
-void pager_predict(int* predict, int curr_pg, int my_prog_var) {
-    if(my_prog_var == 0) {
+void pager_predict(int* predict, int curr_pg, int curr_prog_var) {
+    if(curr_prog_var == 0) {
         if(curr_pg == 2) {
             set_to_one_3(&predict[3], &predict[4], &predict[9]);
         }
@@ -25,7 +25,7 @@ void pager_predict(int* predict, int curr_pg, int my_prog_var) {
             set_to_one_2(&predict[curr_pg + 1], &predict[curr_pg + 2]);
         }
     }
-    else if(my_prog_var == 1) {
+    else if(curr_prog_var == 1) {
         if(curr_pg == 7) {
             set_to_one_2(&predict[0], &predict[8]);
         }
@@ -36,7 +36,7 @@ void pager_predict(int* predict, int curr_pg, int my_prog_var) {
             set_to_one_2(&predict[curr_pg + 1], &predict[curr_pg + 2]);
         }
     }
-    else if(my_prog_var == 2) {
+    else if(curr_prog_var == 2) {
         if(curr_pg == 12) {
             set_to_one_2(&predict[9], &predict[13]);
         }
@@ -47,7 +47,7 @@ void pager_predict(int* predict, int curr_pg, int my_prog_var) {
             set_to_one_2(&predict[curr_pg + 1], &predict[curr_pg + 2]);
         }
     }
-    else if(my_prog_var == 3) {
+    else if(curr_prog_var == 3) {
         if(curr_pg == 13) {
             set_to_one_2(&predict[0], &predict[14]);
         }
@@ -58,7 +58,7 @@ void pager_predict(int* predict, int curr_pg, int my_prog_var) {
             set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
         }
     }
-    else if(my_prog_var == 4) {
+    else if(curr_prog_var == 4) {
         if(curr_pg == 2) {
             set_to_one_2(&predict[0], &predict[3]);
         }
@@ -167,11 +167,12 @@ void pageit(Pentry q[MAXPROCESSES]) {
             }
             else if(curr_pg == 14) {
                 selection[proc_val] = 3;
+            } else if (curr_pg == 12) {
+                selection[proc_val] = 13;
             }
 
             pager_predict(page_predict, curr_pg, selection[proc_val]); // my prediction function
-            // 1911/128 < 15
-            for(int i = 0; i < 15; i++) {
+            for(int i = 0; i < 15; i++) { // 1911/128 < 15
                 if(page_predict[i]) {
                     // swap the page if predicted
                     if(q[proc_val].pages[i]) {
