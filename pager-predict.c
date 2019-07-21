@@ -103,18 +103,33 @@ void pager_predict(int* predict, int curr_pg, int curr_prog_var) {
     }
     else {
         // if none of the prog_vars -> check the page and run all 
+        // if (curr_pg == 1) {
+        //     set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
+        // }
         if(curr_pg == 2) {
             set_to_one_3(&predict[3], &predict[4], &predict[10]);
         }
         else if(curr_pg == 3) {
             set_to_one_2(&predict[4], &predict[10]);
         }
+        // else if(curr_pg == 4) {
+        //     set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
+        // }
+        // else if(curr_pg == 5) {
+        //     set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
+        // }
+        // else if(curr_pg == 6) {
+        //     set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
+        // }
         else if(curr_pg == 7) {
             set_to_one_3(&predict[0], &predict[8], &predict[9]);
         }
         else if(curr_pg == 8) {
             set_to_one_3(&predict[0], &predict[9], &predict[10]);
         }
+        // else if(curr_pg == 9) {
+        //     set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
+        // }
         else if(curr_pg == 10) {
             set_to_one_3(&predict[0], &predict[10], &predict[12]);
         }
@@ -149,6 +164,7 @@ void pageit(Pentry q[MAXPROCESSES]) {
     int p_counter;
     int curr_pg;
     int proc_val;
+    int selected = 0;
 
     /* initialize static vars on first run */
     if(!initialized){
@@ -171,8 +187,7 @@ void pageit(Pentry q[MAXPROCESSES]) {
             p_counter = q[proc_val].pc;              
             curr_pg = p_counter/PAGESIZE;         
             page_predict[curr_pg] = 1;
-            int selected = 0;
-
+            
             // selecting program based on the previous page
             selected = selector(curr_pg, prev_pg[proc_val]);
             if (selected != -1) {
