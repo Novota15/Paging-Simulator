@@ -10,7 +10,7 @@ void set_to_one_3(int*, int*, int*);
 void pager_predict(int* predict, int curr_pg, int my_prog_var) {
     if(my_prog_var == 0) {
         if(curr_pg == 2) {
-            set_to_one_3(&predict[3], &predict[4], &predict[10]);
+            set_to_one_3(&predict[3], &predict[4], &predict[9]);
         }
         else if(curr_pg == 3) {
             set_to_one_3(&predict[4], &predict[10], &predict[11]);
