@@ -3,10 +3,42 @@
 
 #include "simulator.h"
 
+int selector(int, int, int);
 void pager_predict(int*, int, int);
 void set_to_one_2(int*, int*);
 void set_to_one_3(int*, int*, int*);
 
+// process selector
+int selector(int curr_pg, int prev) {
+    if(curr_pg == 0 && prev == 8) {
+        return 1;
+    }
+    else if(curr_pg == 0 && prev == 3) { 
+        return 4;  
+    }
+    else if(curr_pg == 9 && prev == 13) {
+        return 2;  
+    } 
+    else if((prev == 11 && curr_pg == 0) || (prev == 3 && curr_pg == 10)) {
+        return 0;
+    }
+    else if(curr_pg == 14) {
+        return 3;
+    }
+    return -1;
+}
+// functions that set value to one
+void set_to_one_2(int* a, int* b) {
+    *a = 1; // setting a to 1
+    *b = 1; // setting b to 1
+}
+// has one more input than A
+void set_to_one_3(int* a, int* b, int* c) {
+    *a = 1; // setting a to 1
+    *b = 1; // setting b to 1
+    *c = 1; // setting c to 1
+}
+// my predictions
 void pager_predict(int* predict, int curr_pg, int curr_prog_var) {
     if(curr_prog_var == 0) {
         if(curr_pg == 2) {
@@ -70,7 +102,7 @@ void pager_predict(int* predict, int curr_pg, int curr_prog_var) {
         }
     }
     else {
-        // if none of the prog_vars -> id the page and run all 
+        // if none of the prog_vars -> check the page and run all 
         if(curr_pg == 2) {
             set_to_one_3(&predict[3], &predict[4], &predict[10]);
         }
@@ -101,37 +133,6 @@ void pager_predict(int* predict, int curr_pg, int curr_prog_var) {
             set_to_one_2(&predict[curr_pg+1], &predict[curr_pg+2]);
         }
     }
-}
-
-// functions that set value to one
-void set_to_one_2(int* a, int* b) {
-    *a = 1; // setting a to 1
-    *b = 1; // setting b to 1
-}
-// has one more input than A
-void set_to_one_3(int* a, int* b, int* c) {
-    *a = 1; // setting a to 1
-    *b = 1; // setting b to 1
-    *c = 1; // setting c to 1
-}
-
-int selector(int curr_pg, int prev) {
-    if(curr_pg == 0 && prev == 8) {
-        return 1;
-    }
-    else if(curr_pg == 0 && prev == 3) { 
-        return 4;  
-    }
-    else if(curr_pg == 9 && prev == 13) {
-        return 2;  
-    } 
-    else if((prev == 11 && curr_pg == 0) || (prev == 3 && curr_pg == 10)) {
-                return 0;
-    }
-    else if(curr_pg == 14) {
-                return 3;
-    }
-    return -1;
 }
 
 void pageit(Pentry q[MAXPROCESSES]) { 
@@ -171,30 +172,12 @@ void pageit(Pentry q[MAXPROCESSES]) {
             curr_pg = p_counter/PAGESIZE;         
             page_predict[curr_pg] = 1;
             int selected = 0;
-            selected = selector(curr_pg, prev_pg[proc_val]);
+
             // selecting program based on the previous page
+            selected = selector(curr_pg, prev_pg[proc_val]);
             if (selected != -1) {
                 selection[proc_val] = selected;
             }
-            
-            // if(curr_pg == 0 && prev_pg[proc_val] == 8) {
-            //     selection[proc_val] = 1;
-            // }
-            // else if(curr_pg == 0 && prev_pg[proc_val] == 3) { 
-            //     selection[proc_val] = 4;  
-            // }
-            // else if(curr_pg == 9 && prev_pg[proc_val] == 13) {
-            //     selection[proc_val] = 2;  
-            // } 
-            // else if((prev_pg[proc_val] == 11 && curr_pg == 0) || (prev_pg[proc_val] == 3 && curr_pg == 10)) {
-            //     selection[proc_val] = 0;
-            // }
-            // else if(curr_pg == 14) {
-            //     selection[proc_val] = 3;
-            // }
-            // } else if (curr_pg == 12) {
-            //     selection[proc_val] = 13;
-            // }
 
             pager_predict(page_predict, curr_pg, selection[proc_val]); // my prediction function
             for(int i = 0; i < 15; i++) { // 1911/128 < 15
@@ -205,8 +188,7 @@ void pageit(Pentry q[MAXPROCESSES]) {
                     }
                     else {
                         pagein(proc_val, i);
-                    }
-                    
+                    }    
                 }
                 else {
                     // page out if page not predicted
@@ -215,14 +197,14 @@ void pageit(Pentry q[MAXPROCESSES]) {
                             continue;
                         }
                         else {
-                            printf("*** Error! ***\n");
+                            printf("Error\n");
                             exit(0);
                         }
                         
                     }
                 }
             }
-            // set the previous page
+            // set the previous page from the current that was used
             prev_pg[proc_val] = curr_pg;
         }
     }
