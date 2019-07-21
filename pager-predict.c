@@ -115,7 +115,7 @@ void set_to_one_3(int* a, int* b, int* c) {
     *c = 1; // setting c to 1
 }
 
-int selector(curr_pg, prev) {
+int selector(int curr_pg, int prev) {
     if(curr_pg == 0 && prev == 8) {
         return 1;
     }
