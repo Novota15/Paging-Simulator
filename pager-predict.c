@@ -115,6 +115,25 @@ void set_to_one_3(int* a, int* b, int* c) {
     *c = 1; // setting c to 1
 }
 
+int selector(curr_pg, prev) {
+    if(curr_pg == 0 && prev == 8) {
+        return 1;
+    }
+    else if(curr_pg == 0 && prev == 3) { 
+        return 4;  
+    }
+    else if(curr_pg == 9 && prev == 13) {
+        return 2;  
+    } 
+    else if((prev == 11 && curr_pg == 0) || (prev == 3 && curr_pg == 10)) {
+                return 0;
+    }
+    else if(curr_pg == 14) {
+                return 3;
+    }
+    return 0;
+}
+
 void pageit(Pentry q[MAXPROCESSES]) { 
     /* This file contains the stub for a predictive pager */
 
@@ -153,21 +172,22 @@ void pageit(Pentry q[MAXPROCESSES]) {
             page_predict[curr_pg] = 1;
 
             // selecting program based on the previous page
-            if(curr_pg == 0 && prev_pg[proc_val] == 8) {
-                selection[proc_val] = 1;
-            }
-            else if(curr_pg == 0 && prev_pg[proc_val] == 3) { 
-                selection[proc_val] = 4;  
-            }
-            else if(curr_pg == 9 && prev_pg[proc_val] == 13) {
-                selection[proc_val] = 2;  
-            } 
-            else if((prev_pg[proc_val] == 11 && curr_pg == 0) || (prev_pg[proc_val] == 3 && curr_pg == 10)) {
-                selection[proc_val] = 0;
-            }
-            else if(curr_pg == 14) {
-                selection[proc_val] = 3;
-            }
+            selection[proc_val] = selector(curr_pg, prev_pg[proc_val]);
+            // if(curr_pg == 0 && prev_pg[proc_val] == 8) {
+            //     selection[proc_val] = 1;
+            // }
+            // else if(curr_pg == 0 && prev_pg[proc_val] == 3) { 
+            //     selection[proc_val] = 4;  
+            // }
+            // else if(curr_pg == 9 && prev_pg[proc_val] == 13) {
+            //     selection[proc_val] = 2;  
+            // } 
+            // else if((prev_pg[proc_val] == 11 && curr_pg == 0) || (prev_pg[proc_val] == 3 && curr_pg == 10)) {
+            //     selection[proc_val] = 0;
+            // }
+            // else if(curr_pg == 14) {
+            //     selection[proc_val] = 3;
+            // }
             // } else if (curr_pg == 12) {
             //     selection[proc_val] = 13;
             // }
