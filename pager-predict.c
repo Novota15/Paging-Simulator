@@ -131,7 +131,7 @@ int selector(int curr_pg, int prev) {
     else if(curr_pg == 14) {
                 return 3;
     }
-    return 0;
+    return -1;
 }
 
 void pageit(Pentry q[MAXPROCESSES]) { 
@@ -170,9 +170,13 @@ void pageit(Pentry q[MAXPROCESSES]) {
             p_counter = q[proc_val].pc;              
             curr_pg = p_counter/PAGESIZE;         
             page_predict[curr_pg] = 1;
-
+            int selected = 0;
+            selected = selector(curr_pg, prev_pg[proc_val]);
             // selecting program based on the previous page
-            selection[proc_val] = selector(curr_pg, prev_pg[proc_val]);
+            if (selected != -1) {
+                selection[proc_val] = selected;
+            }
+            
             // if(curr_pg == 0 && prev_pg[proc_val] == 8) {
             //     selection[proc_val] = 1;
             // }
