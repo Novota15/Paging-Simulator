@@ -3,7 +3,7 @@
 
 #include "simulator.h"
 
-int selector(int, int, int);
+int selector(int, int);
 void pager_predict(int*, int, int);
 void set_to_one_2(int*, int*);
 void set_to_one_3(int*, int*, int*);
