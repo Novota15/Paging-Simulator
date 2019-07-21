@@ -125,7 +125,7 @@ void pageit(Pentry q[MAXPROCESSES]) {
     static int selection[MAXPROCESSES];
 
     /* Local vars */
-    int proctmp;
+    // int proctmp;
     int p_counter;
     int curr_pg;
     int proc_val;
