@@ -167,9 +167,10 @@ void pageit(Pentry q[MAXPROCESSES]) {
             }
             else if(curr_pg == 14) {
                 selection[proc_val] = 3;
-            } else if (curr_pg == 12) {
-                selection[proc_val] = 13;
             }
+            // } else if (curr_pg == 12) {
+            //     selection[proc_val] = 13;
+            // }
 
             pager_predict(page_predict, curr_pg, selection[proc_val]); // my prediction function
             for(int i = 0; i < 15; i++) { // 1911/128 < 15
